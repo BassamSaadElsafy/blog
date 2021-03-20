@@ -17,12 +17,11 @@
       <tr>
 
         @foreach ($posts as $post)
-            
-       
-        <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+        
+        <th scope="row">{{ $post['id'] }}</th>
+            <td>{{ $post['title'] }}</td>
+            <td>{{ $post['posted_by'] }}</td>
+            <td>{{ $post['created_at'] }}</td>
             <td>
 
                 <a href="#" class="btn btn-success">View</a>
