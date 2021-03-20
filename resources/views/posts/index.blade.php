@@ -34,12 +34,11 @@
             <td>{{ $post['created_at'] }}</td>
             <td>
 
-                <x-button type='success' href="{{ route('posts.show' , ['post' => $post['id']]) }}" name="{{ 'view' }}"></x-button>
+                <x-button type='success' href="{{ route('posts.show' , ['post' => $post['id']]) }}" >View</x-button>
 
-                <x-button type='primary' href="{{ route('posts.edit' , ['post' => $post['id']]) }}" name="{{ 'edit' }}"></x-button>
+                <x-button type='primary' href="{{ route('posts.edit' , ['post' => $post['id']]) }}">Edit</x-button>
 
-                <x-button type='danger' href="#" name="{{ 'delete' }}"></x-button>
-
+                <x-button type='danger' href="#" name="{{ 'delete' }}">Delete</x-button>
 
                 {{-- <a href="{{ route('posts.show', ['post' => $post['id']]) }}" class="btn btn-success">View</a>
                 <a href="{{ route('posts.edit', ['post' => $post['id']]) }}" class="btn btn-primary">Edit</a>

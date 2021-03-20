@@ -7,7 +7,6 @@ use Illuminate\View\Component;
 class Button extends Component
 {
 
-    public $name;
     public $type;
     public $href;
     /**
@@ -15,9 +14,8 @@ class Button extends Component
      *
      * @return void
      */
-    public function __construct($name, $type, $href)
+    public function __construct($type, $href)
     {
-        $this->name = $name;
         $this->type = $type;
         $this->href = $href;
     }
