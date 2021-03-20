@@ -14,9 +14,8 @@ class PostController extends Controller
     public function index()
     {
 
-        //data 
         $data = [
-            
+
             ['id' => 1 , 'title' => 'learn PHP' ,'posted_by' => 'Bassam' , 'created_at' => '2020-01-15'],
             ['id' => 2 , 'title' => 'solid principles' ,'posted_by' => 'Tamer' , 'created_at' => '2019-06-17'],
             ['id' => 3 , 'title' => 'Design Pattern' ,'posted_by' => 'Sara' , 'created_at' => '2017-05-24'],
