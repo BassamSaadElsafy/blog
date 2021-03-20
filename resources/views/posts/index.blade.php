@@ -1,7 +1,17 @@
 @extends('posts.layouts.app')
 
+@section('title')
+    All Posts
+@endsection
+
 @section('content')
 
+
+<a href="{{ route('posts.create') }}" class="btn btn-primary">craete post</a>
+
+<hr>
+
+{{-- <x-button type='danger' href="{{ route('posts.show' , 1) }}" name="{{ 'view' }}"></x-button> --}}
 
 <table class="table">
     <thead>
@@ -24,9 +34,16 @@
             <td>{{ $post['created_at'] }}</td>
             <td>
 
-                <a href="#" class="btn btn-success">View</a>
-                <a href="#" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <x-button type='success' href="{{ route('posts.show' , ['post' => $post['id']]) }}" name="{{ 'view' }}"></x-button>
+
+                <x-button type='primary' href="{{ route('posts.edit' , ['post' => $post['id']]) }}" name="{{ 'edit' }}"></x-button>
+
+                <x-button type='danger' href="#" name="{{ 'delete' }}"></x-button>
+
+
+                {{-- <a href="{{ route('posts.show', ['post' => $post['id']]) }}" class="btn btn-success">View</a>
+                <a href="{{ route('posts.edit', ['post' => $post['id']]) }}" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-danger">Delete</a> --}}
 
             </td>
         </tr>

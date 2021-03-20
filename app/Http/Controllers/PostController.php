@@ -16,10 +16,38 @@ class PostController extends Controller
 
         $data = [
 
-            ['id' => 1 , 'title' => 'learn PHP' ,'posted_by' => 'Bassam' , 'created_at' => '2020-01-15'],
-            ['id' => 2 , 'title' => 'solid principles' ,'posted_by' => 'Tamer' , 'created_at' => '2019-06-17'],
-            ['id' => 3 , 'title' => 'Design Pattern' ,'posted_by' => 'Sara' , 'created_at' => '2017-05-24'],
-            ['id' => 4 , 'title' => 'learn Java' ,'posted_by' => 'Ali' , 'created_at' => '2010-08-28'],
+            ['id' => 1 , 'title' => 'learn PHP' ,'posted_by' => 'Bassam' , 'created_at' => '2020-01-15',
+                'post_creator' => [
+                    'name'   => 'Samy',
+                    'email'   => 'samy@yahoo.com',
+                    'created_at'   => '2021-01-01',
+                ]
+            ],
+            ['id' => 2 , 'title' => 'solid principles' ,'posted_by' => 'Tamer' , 'created_at' => '2019-06-17',
+                'post_creator' => [
+                    'name'   => 'Taha',
+                    'email'   => 'taha@yahoo.com',
+                    'created_at'   => '2021-02-07',
+                ]    
+            ],
+            ['id' => 3 , 'title' => 'Design Pattern' ,'posted_by' => 'Sara' , 'created_at' => '2017-05-24',
+        
+                'post_creator' => [
+                    'name'   => 'doaa',
+                    'email'   => 'doaa@yahoo.com',
+                    'created_at'   => '2020-05-09',
+                ]  
+
+            ],
+            ['id' => 4 , 'title' => 'learn Java' ,'posted_by' => 'Ali' , 'created_at' => '2010-08-28',
+        
+                'post_creator' => [
+                    'name'   => 'yasser',
+                    'email'   => 'yasser@yahoo.com',
+                    'created_at'   => '2020-10-18',
+                ]  
+
+            ]
 
         ];
 
@@ -33,7 +61,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -44,7 +72,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -55,7 +83,20 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $data = 
+
+            ['id' => 1 , 'title' => 'learn PHP' ,'description' => 'this is my lovely language' ,'posted_by' => 'Bassam' , 'created_at' => '2020-01-15',
+                'post_creator' => [
+                    'name'   => 'Bassam',
+                    'email'   => 'bassam@yahoo.com',
+                    'created_at'   => '2021-01-01',
+                ]
+            ]
+        ;
+
+        return view('posts.show', ['post' => $data]);
+        
     }
 
     /**
@@ -66,7 +107,18 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = 
+
+            ['id' => 1 , 'title' => 'learn PHP' ,'description' => 'this is my lovely language' ,'posted_by' => 'Bassam' , 'created_at' => '2020-01-15',
+                'post_creator' => [
+                    'name'   => 'Bassam',
+                    'email'   => 'bassam@yahoo.com',
+                    'created_at'   => '2021-01-01',
+                ]
+            ]
+        ;
+
+        return view('posts.edit', ['post' => $data]);
     }
 
     /**
@@ -78,7 +130,9 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    
+        return redirect()->route('posts.index');
+        
     }
 
     /**
