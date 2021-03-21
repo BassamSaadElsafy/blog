@@ -23,6 +23,15 @@
   </div>
 </div>
 
+Comments: <br> 
+
+@foreach ($post->user->comments as $comment)
+
+<b> {{ \App\Models\User::find($comment->commentable_id)->name }} :</b>
+ {{ $comment->body }}
+    
+@endforeach
+
 <hr>
 
 

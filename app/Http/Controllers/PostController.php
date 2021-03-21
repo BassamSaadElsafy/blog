@@ -15,7 +15,6 @@ class PostController extends Controller
      */
     public function index()
     {
-
         $data = Post::withTrashed()->paginate(10);
 
         return view('posts.index', ['posts' => $data]);
@@ -29,6 +28,7 @@ class PostController extends Controller
     public function create()
     {
         $users = User::all();
+
         return view('posts.create' , compact('users'));
     }
 
