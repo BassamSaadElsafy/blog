@@ -38,7 +38,7 @@
                 <x-button type='success btn-sm' href="{{ route('posts.show' , ['post' => $post->id]) }}"> View </x-button>
                 <x-button type='primary btn-sm' href="{{ route('posts.edit' , ['post' => $post->id]) }}"> Edit </x-button>
 
-                <button type="button" class="btn btn-warning btn-sm show-ajax" data-toggle="modal" data-target="#ajax_view" data-ajax="{{$post->id}}" style="font-size: 12px; font-weight: bolder">Ajax View</button>
+                <button type="button" class="btn btn-warning btn-sm show-post-ajax" data-toggle="modal" data-target="#ajax_post_details" data-post_id="{{$post->id}}" style="font-size: 12px; font-weight: bolder">Ajax View</button>
 
                 <!-- Button trigger modal -->
 
@@ -69,7 +69,7 @@
                         </button>
                       </div>
                       <div class="modal-body">    
-                          <b>Are you sure that you want to delete this Post {{ $post->title }}?</b>
+                          <b>Are you sure that you want to delete this Post "{{ $post->title }}" ?!</b>
                       </div>
 
                       <form action="{{ route('posts.destroy', [ 'post' => $post->id ]) }}" method="post">
@@ -99,7 +99,7 @@
   </table>
 {{$posts->links("pagination::bootstrap-4")}}
 
-<div id="ajax_view" class="modal fade" role="dialog">
+<div id="ajax_post_details" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
@@ -121,14 +121,14 @@
 
     $(document).ready(function () {
 
-      $('.show-ajax').click(function () {
+      $('.show-post-ajax').click(function () {
 
-        console.log($(this).data('ajax'));
+        console.log($(this).data('post_id'));
 
         $.ajax({
             url: '{{ route('posts.ajax_show') }}',
             type: 'get',
-            data: {post: $(this).data('ajax')},
+            data: {post: $(this).data('post_id')},
             success: function (data) {
               $('#post_content').html(data);
             }

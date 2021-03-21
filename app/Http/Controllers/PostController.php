@@ -103,10 +103,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-        
+        $post = Post::find($id);   
         $post->delete();
-        
         return redirect()->route('posts.index');
         
     }
@@ -115,9 +113,9 @@ class PostController extends Controller
     public function restore(Request $request)
     {
         
-        $post = Post::withTrashed()
-        ->where('id', $request->post_id)
-        ->restore();
+        Post::withTrashed()
+            ->where('id', $request->post_id)
+            ->restore();
 
         return redirect()->route('posts.index');
 
@@ -125,8 +123,10 @@ class PostController extends Controller
 
     public function get_post_response(Request $request)
     {
+
         $data = Post::withTrashed()->where("id", $request->post)->first();
         return view('posts.show_post_ajax', ['post' => $data]);
+
     }
 
 }

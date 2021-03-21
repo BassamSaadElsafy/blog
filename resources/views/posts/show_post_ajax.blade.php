@@ -1,4 +1,5 @@
 <div class="card bg-light">
+
     <div class="card-body">
       <h5 class="card-title text-muted">Title:</h5>
       <p class="card-text"><b>{{$post->title}}</b></p>
@@ -10,4 +11,5 @@
       <p class="card-text">E-mail: <b>{{ $post->user->email }}</b></p>
       <p class="card-text">Created at: <b>{{ $post->human_readable_date($post->created_at) }}</b></p>
     </div>
+    
  </div>
