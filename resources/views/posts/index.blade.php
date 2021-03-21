@@ -32,7 +32,7 @@
             <td>{{ $post->title }}</td>
             <td>{{ $post->description }}</td>
             <td>{{ $post->user->name }}</td>
-            <td>{{ \Carbon\Carbon::parse($post->created_at, 'd/m/Y H:i:s')->isoFormat('ddd  Do  \of MMMM YYYY, h:mm:ss a') }}</td>
+            <td>{{ $post->human_readable_date($post->created_at) }}</td>
             <td>
 
                 <x-button type='success' href="{{ route('posts.show' , ['post' => $post->id]) }}" >View</x-button>
@@ -40,9 +40,22 @@
                 {{-- <x-button type='danger' href="#" name="{{ 'delete' }}">Delete</x-button> --}}
 
                 <!-- Button trigger modal -->
-                <a type="button" class="btn btn-danger" data-toggle="modal" style="color: white" data-target="#deletePost{{ $post->id }}">
-                  Delete
-                </a>
+
+                @if ($post->deleted_at)
+                  <form action="{{ route('posts.restore') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                    <input type="submit"  class="btn btn-default border" value="Restore"/>
+  
+                  </form>
+                @else
+
+                  <a type="button" class="btn btn-danger" data-toggle="modal" style="color: white" data-target="#deletePost{{ $post->id }}">
+                    Delete
+                  </a>
+                    
+                @endif
+                
 
                 <!-- Modal -->
                 <div class="modal fade" id="deletePost{{ $post->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,8 +96,8 @@
  
     </tbody>
   </table>
-
-  {{ $posts->links() }}
+<div class="clear"></div>
+{{$posts->links("pagination::bootstrap-4")}}
   
     
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
 
-        $data = Post::paginate(1);
+        $data = Post::withTrashed()->paginate(10);
 
         return view('posts.index', ['posts' => $data]);
     }
@@ -106,5 +106,17 @@ class PostController extends Controller
         
         return redirect()->route('posts.index');
         
+    }
+
+    //restore post function
+    public function restore(Request $request)
+    {
+        
+        $post = Post::withTrashed()
+        ->where('id', $request->post_id)
+        ->restore();
+
+        return redirect()->route('posts.index');
+
     }
 }
