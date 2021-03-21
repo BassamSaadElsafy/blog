@@ -15,8 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::withTrashed()->paginate(10);
 
+        $data = Post::withTrashed()->paginate(15);
         return view('posts.index', ['posts' => $data]);
     }
 
@@ -28,7 +28,6 @@ class PostController extends Controller
     public function create()
     {
         $users = User::all();
-
         return view('posts.create' , compact('users'));
     }
 
@@ -40,6 +39,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+      
+        //create([
+        //     'col'   => 'value'
+        // ]);
         
         Post::create($request->all());
 
@@ -119,4 +122,11 @@ class PostController extends Controller
         return redirect()->route('posts.index');
 
     }
+
+    public function get_post_response(Request $request)
+    {
+        $data = Post::withTrashed()->where("id", $request->post)->first();
+        return view('posts.show_post_ajax', ['post' => $data]);
+    }
+
 }

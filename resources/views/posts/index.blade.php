@@ -32,12 +32,13 @@
             <td>{{ $post->title }}</td>
             <td>{{ $post->description }}</td>
             <td>{{ $post->user->name }}</td>
-            <td>{{ $post->human_readable_date($post->created_at) }}</td>
+            <td>{{ $post->created_at->format('d/m/Y') }}</td>
             <td>
 
-                <x-button type='success' href="{{ route('posts.show' , ['post' => $post->id]) }}" >View</x-button>
-                <x-button type='primary' href="{{ route('posts.edit' , ['post' => $post->id]) }}">Edit</x-button>
-                {{-- <x-button type='danger' href="#" name="{{ 'delete' }}">Delete</x-button> --}}
+                <x-button type='success btn-sm' href="{{ route('posts.show' , ['post' => $post->id]) }}"> View </x-button>
+                <x-button type='primary btn-sm' href="{{ route('posts.edit' , ['post' => $post->id]) }}"> Edit </x-button>
+
+                <button type="button" class="btn btn-warning btn-sm show-ajax" data-toggle="modal" data-target="#ajax_view" data-ajax="{{$post->id}}" style="font-size: 12px; font-weight: bolder">Ajax View</button>
 
                 <!-- Button trigger modal -->
 
@@ -50,8 +51,8 @@
                   </form>
                 @else
 
-                  <a type="button" class="btn btn-danger" data-toggle="modal" style="color: white" data-target="#deletePost{{ $post->id }}">
-                    Delete
+                  <a type="button" class="btn btn-danger btn-sm" data-toggle="modal" style="color: white" data-target="#deletePost{{ $post->id }}">
+                    X
                   </a>
                     
                 @endif
@@ -96,11 +97,49 @@
  
     </tbody>
   </table>
-<div class="clear"></div>
 {{$posts->links("pagination::bootstrap-4")}}
+
+<div id="ajax_view" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center">Post Details</h4>
+        <button type="button" class="close" data-dismiss="modal">×</button>
+      </div>
+      <div class="modal-body" id="post_content">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+@push('js')
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   
-    
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+
+    $(document).ready(function () {
+
+      $('.show-ajax').click(function () {
+
+        console.log($(this).data('ajax'));
+
+        $.ajax({
+            url: '{{ route('posts.ajax_show') }}',
+            type: 'get',
+            data: {post: $(this).data('ajax')},
+            success: function (data) {
+              $('#post_content').html(data);
+            }
+        });
+
+      });
+
+    });
+
+  </script>
+@endpush
+
+
 @endsection

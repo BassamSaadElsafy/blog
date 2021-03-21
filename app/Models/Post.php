@@ -15,11 +15,10 @@ class Post extends Model
         'title',
         'description',
         'user_id',
-
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user(){                             //
+        return $this->belongsTo(User::class);           //m - one
     }
 
     public function human_readable_date($date)

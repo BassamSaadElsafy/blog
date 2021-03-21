@@ -27,4 +27,6 @@ Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.upda
 Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 
-Route::post('posts/restore', [PostController::class, 'restore'])->name('posts.restore');
+Route::post('/posts/restore', [PostController::class, 'restore'])->name('posts.restore');
+
+Route::get('/posts/show/ajax', [PostController::class, 'get_post_response'])->name('posts.ajax_show');
