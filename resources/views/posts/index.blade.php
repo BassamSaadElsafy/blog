@@ -32,7 +32,7 @@
             <td>{{ $post->title }}</td>
             <td>{{ $post->description }}</td>
             <td>{{ $post->user->name }}</td>
-            <td>{{ $post->created_at }}</td>
+            <td>{{ \Carbon\Carbon::parse($post->created_at, 'd/m/Y H:i:s')->isoFormat('ddd  Do  \of MMMM YYYY, h:mm:ss a') }}</td>
             <td>
 
                 <x-button type='success' href="{{ route('posts.show' , ['post' => $post->id]) }}" >View</x-button>
@@ -63,8 +63,8 @@
                         @csrf
                         @method('delete')
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                          <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">No</button>
+                          <input type="submit" class="btn btn-danger btn-sm" value="Yes">
                         </div>
 
                       </form>
