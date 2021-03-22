@@ -40,10 +40,22 @@ class PostController extends Controller
     public function store(Request $request)
     {
       
-        //create([
-        //     'col'   => 'value'
-        // ]);
-        
+        //validation
+        $request->validate([
+
+            'title'        => ['required', 'min:5'],
+            'description'  => ['required', 'min:8']
+
+        ],
+        [
+            'title.required' => 'you must fill title field',
+            'title.min' => 'post title must be at least 3 characters',
+            'description.required' => 'you must fill description field',
+            'description.min' => 'post description must be at least 8 characters',
+        ]
+    );
+
+
         Post::create($request->all());
 
         return redirect()->route('posts.index');
