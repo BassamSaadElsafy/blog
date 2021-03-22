@@ -23,11 +23,11 @@
 
   <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" id="title" placeholder="post title">
+    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" id="title" placeholder="post title" value="{{ old('title') }}">
   
 
     @error('title')
-      <div class="alert alert-danger">{{ $message }}</div>
+      <div class="text-danger">{{ $message }}</div>
     @enderror
 
   
@@ -35,10 +35,10 @@
 
   <div class="form-group">
     <label for="description">Description</label>
-    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" rows="3" placeholder="post description"></textarea>
-  
+    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" rows="3" placeholder="post description">{{ old('description') }}</textarea>
+    
     @error('description')
-      <div class="alert alert-danger">{{ $message }}</div>
+      <div class="text-danger">{{ $message }}</div>
     @enderror
   
   </div>

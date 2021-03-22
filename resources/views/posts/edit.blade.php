@@ -14,12 +14,22 @@
 
   <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" class="form-control" name="title" id="title" placeholder="post title" value="{{ $post->title }}">
+    <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" id="title" placeholder="post title" value="{{ $post->title }}">
+  
+    @error('title')
+      <div class="text-danger">{{ $message }}</div>
+    @enderror
+
   </div>
 
   <div class="form-group">
     <label for="description">Description</label>
-    <textarea class="form-control" id="description" name="description" rows="3" placeholder="post description">{{ $post->description }}</textarea>
+    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3" placeholder="post description">{{ $post->description }}</textarea>
+  
+    @error('description')
+      <div class="text-danger">{{ $message }}</div>
+    @enderror
+  
   </div>
 
   <div class="form-group">

@@ -43,17 +43,17 @@ class PostController extends Controller
         //validation
         $request->validate([
 
-            'title'        => ['required', 'min:5'],
-            'description'  => ['required', 'min:8']
+                'title'        => ['required', 'min:3', 'unique:posts'],
+                'description'  => ['required', 'min:10']
 
-        ],
-        [
-            'title.required' => 'you must fill title field',
-            'title.min' => 'post title must be at least 3 characters',
-            'description.required' => 'you must fill description field',
-            'description.min' => 'post description must be at least 8 characters',
-        ]
-    );
+            ],
+            [
+                'title.required'       => 'you must fill title field',
+                'title.min'            => 'post title must be at least 3 characters',
+                'description.required' => 'you must fill description field',
+                'description.min'      => 'post description must be at least 10 characters',
+            ]
+        );
 
 
         Post::create($request->all());
@@ -95,6 +95,22 @@ class PostController extends Controller
      */
     public function update(Request $request, $post_id)
     {
+
+        //validation
+        $request->validate([
+
+            'title'        => ['required', 'min:3', 'unique:posts,id,' . $post_id], //ignore unique validation for the post that contains this post_id
+            'description'  => ['required', 'min:10']
+
+        ],
+        [
+            'title.required'       => 'you must fill title field',
+            'title.min'            => 'post title must be at least 3 characters',
+            'description.required' => 'you must fill description field',
+            'description.min'      => 'post description must be at least 10 characters',
+        ]
+    );
+
 
         $post = Post::find($post_id);
 
