@@ -17,6 +17,7 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Titls</th>
+        <th scope="col">Slug</th>
         <th scope="col">Description</th>
         <th scope="col">Posted By</th>
         <th scope="col">Created At</th>
@@ -30,6 +31,7 @@
         
         <th scope="row">{{ $post->id }}</th>
             <td>{{ $post->title }}</td>
+            <td>{{ $post->slug }}</td>
             <td>{{ $post->description }}</td>
             <td>{{ $post->user->name }}</td>
             <td>{{ $post->created_at->format('d/m/Y') }}</td>
