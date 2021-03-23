@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -162,6 +163,15 @@ class PostController extends Controller
 
         $data = Post::withTrashed()->where("id", $request->post)->first();
         return view('posts.show_post_ajax', ['post' => $data]);
+
+    }
+
+    //logout function
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('login');
 
     }
 

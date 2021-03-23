@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
 use Whoops\Run;
 
 /*
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/restore', [PostController::class, 'restore'])->name('posts.restore');
 
     Route::get('/posts/show/ajax', [PostController::class, 'get_post_response'])->name('posts.ajax_show');
+    
+    Route::any('/posts/logout', [PostController::class, 'logout'])->name('posts.logout');
+
 
 });
 
