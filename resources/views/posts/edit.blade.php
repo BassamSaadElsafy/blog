@@ -12,6 +12,8 @@
   @csrf
   @method('PUT')
 
+  <input type="hidden" name="post_id" value="{{ $post->id }}">
+
   <div class="form-group">
     <label for="title">Title</label>
     <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" id="title" placeholder="post title" value="{{ $post->title }}">

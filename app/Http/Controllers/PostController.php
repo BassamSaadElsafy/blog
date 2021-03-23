@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,33 +40,10 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
     
-        $valid_usersIDs = implode(',',User::pluck('id')->toArray());
-        //validation
-        $data = $request->validate([
-
-                'title'        => ['required', 'min:3', 'unique:posts'],
-                'description'  => ['required', 'min:10'],
-                'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
-                'post_img'     => ['required','file','mimes:jpeg,png']            //file or using image for validation images
-
-            ],
-            [
-                'title.required'       => 'you must fill title field',
-                'title.min'            => 'post title must be at least 3 characters',
-                'description.required' => 'you must fill description field',
-                'description.min'      => 'post description must be at least 10 characters',
-                'user_id.required'     => 'Post Creator must be selected from the list',
-                'user_id.in'           => 'Post Creator is not valid!',
-                'post_img.required'    => 'Post Image is mandatory!',
-                'post_img.file'        => 'Post Image must be file!',
-                'post_img.mimes'       => 'Post Image must be jpeg or png type!',
-            ]
-        );
-
-
+        $data = $request->all();
 
         $data['post_img'] = $request->post_img->getClientOriginalName();
         $request->post_img->storeAs('post_images', $data['post_img']);
@@ -106,33 +85,8 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $post_id)
+    public function update(UpdatePostRequest $request, $post_id)
     {
-
-        $valid_usersIDs = implode(',',User::pluck('id')->toArray());
-
-        //validation
-        $data = $request->validate([
-
-            'title'        => ['required', 'min:3', 'unique:posts,id,' . $post_id], //ignore unique validation for the post that contains this post_id
-            'description'  => ['required', 'min:10'],
-            'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
-            'post_img'     => ['required','file','mimes:jpeg,png']            //file or using image for validation images
-
-        ],
-        [
-            'title.required'       => 'you must fill title field',
-            'title.min'            => 'post title must be at least 3 characters',
-            'description.required' => 'you must fill description field',
-            'description.min'      => 'post description must be at least 10 characters',
-            'user_id.required'     => 'Post Creator must be selected from the list',
-            'user_id.in'           => 'Post Creator is not valid!',
-            'post_img.required'    => 'Post Image is mandatory!',
-            'post_img.file'        => 'Post Image must be file!',
-            'post_img.mimes'       => 'Post Image must be jpeg or png type!',
-        ]
-    );
-
 
         $post = Post::find($post_id);
 
