@@ -13,7 +13,7 @@ class PostController extends Controller
   
     public function index()
     {
-        $data = Post::withTrashed()->paginate(15);
+        $data = Post::withTrashed()->paginate(20);
         return ['statusCode' => 200 , 'data' => PostResource::collection($data) ];
     }
 
