@@ -3,44 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function index()
     {
         $data = Post::withTrashed()->paginate(15);
-        return ['statusCode' => 200 , 'data' =>  $data];
+        return ['statusCode' => 200 , 'data' => PostResource::collection($data) ];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         $valid_usersIDs = implode(',',User::pluck('id')->toArray());
-        
+
         $request->validate( [
 
                 'title'        => ['required', 'min:3', 'unique:posts'],
@@ -66,16 +47,11 @@ class PostController extends Controller
         return ['statusCode' => 201 , 'statusMessage' => 'Post created successfully' , 'data' => $data];
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $data = Post::find($id);
-        return ['statusCode'=> 200 ,'data' => $data];
+        return ['statusCode'=> 200 ,'data' => new PostResource($data) ];
     }
 
   
