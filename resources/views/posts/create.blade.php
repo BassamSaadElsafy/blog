@@ -17,7 +17,7 @@
     </div>
 @endif --}}
 
-<form action="{{ route('posts.store') }}" method="POST">
+<form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
 
   @csrf
 
@@ -41,6 +41,14 @@
       <div class="text-danger">{{ $message }}</div>
     @enderror
   
+  </div>
+
+  <div class="form-group">
+    <label for="exampleFormControlFile1">Post Image</label>
+    <input type="file" name="post_img" class="form-control-file @error('post_img') is-invalid @enderror" id="exampleFormControlFile1">
+    @error('post_img')
+      <div class="text-danger">{{ $message }}</div>
+    @enderror
   </div>
 
   <div class="form-group">

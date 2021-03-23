@@ -33,7 +33,9 @@
             <td>{{ $post->title }}</td>
             <td>{{ $post->slug }}</td>
             <td>{{ $post->description }}</td>
+            <td><img src="{{ url('/storage/post_images/'.$post->post_img) }}" width="150" alt="post image" class="img-thumbnail"></td>
             <td>{{ $post->user->name }}</td>
+
             <td>{{ $post->created_at->format('d/m/Y') }}</td>
             <td>
 

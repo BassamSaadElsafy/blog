@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -42,11 +43,12 @@ class PostController extends Controller
     
         $valid_usersIDs = implode(',',User::pluck('id')->toArray());
         //validation
-        $request->validate([
+        $data = $request->validate([
 
                 'title'        => ['required', 'min:3', 'unique:posts'],
                 'description'  => ['required', 'min:10'],
-                'user_id'      => ['required' ,'in:'.$valid_usersIDs]            //taking string like 1,2,3,.....etc
+                'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
+                'post_img'     => ['required','file','mimes:jpeg,png']            //file or using image for validation images
 
             ],
             [
@@ -56,11 +58,18 @@ class PostController extends Controller
                 'description.min'      => 'post description must be at least 10 characters',
                 'user_id.required'     => 'Post Creator must be selected from the list',
                 'user_id.in'           => 'Post Creator is not valid!',
+                'post_img.required'    => 'Post Image is mandatory!',
+                'post_img.file'        => 'Post Image must be file!',
+                'post_img.mimes'       => 'Post Image must be jpeg or png type!',
             ]
         );
 
 
-        Post::create($request->all());
+
+        $data['post_img'] = $request->post_img->getClientOriginalName();
+        $request->post_img->storeAs('post_images', $data['post_img']);
+
+        Post::create($data);
 
         return redirect()->route('posts.index');
     }
@@ -103,11 +112,12 @@ class PostController extends Controller
         $valid_usersIDs = implode(',',User::pluck('id')->toArray());
 
         //validation
-        $request->validate([
+        $data = $request->validate([
 
             'title'        => ['required', 'min:3', 'unique:posts,id,' . $post_id], //ignore unique validation for the post that contains this post_id
             'description'  => ['required', 'min:10'],
-            'user_id'      => ['required', 'in:'.$valid_usersIDs]
+            'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
+            'post_img'     => ['required','file','mimes:jpeg,png']            //file or using image for validation images
 
         ],
         [
@@ -117,16 +127,28 @@ class PostController extends Controller
             'description.min'      => 'post description must be at least 10 characters',
             'user_id.required'     => 'Post Creator must be selected from the list',
             'user_id.in'           => 'Post Creator is not valid!',
+            'post_img.required'    => 'Post Image is mandatory!',
+            'post_img.file'        => 'Post Image must be file!',
+            'post_img.mimes'       => 'Post Image must be jpeg or png type!',
         ]
     );
 
 
         $post = Post::find($post_id);
 
+        //delete old image of post if exist
+        if(!empty($post->post_img)){
+            Storage::delete('post_images/' . $post->post_img);
+        }
+
+        $data['post_img'] = $request->post_img->getClientOriginalName();
+        $request->post_img->storeAs('post_images', $data['post_img']);
+
         $post->update([
-            'title' => $request->title,
+            'title'       => $request->title,
             'description' => $request->description,
-            'user_id' => $request->user_id,
+            'user_id'     => $request->user_id,
+            'post_img'    => $data['post_img'],
         ]);
        
         return redirect()->route('posts.index');
@@ -140,7 +162,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);   
+        $post = Post::find($id);
+        
+        if(!empty($post->post_img)){
+            Storage::delete('post_images/' . $post->post_img);
+        }
+        
         $post->delete();
         return redirect()->route('posts.index');
         

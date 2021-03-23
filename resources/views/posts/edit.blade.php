@@ -7,7 +7,7 @@
 
 @section('content')
 
-<form action="{{ route('posts.update', ['post' => $post->id]) }}" method="POST">
+<form action="{{ route('posts.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
 
   @csrf
   @method('PUT')
@@ -33,12 +33,25 @@
   </div>
 
   <div class="form-group">
+    <label for="exampleFormControlFile1">Post Image</label>
+    <input type="file" name="post_img" class="form-control-file @error('post_img') is-invalid @enderror" id="exampleFormControlFile1">
+    @error('post_img')
+      <div class="text-danger">{{ $message }}</div>
+    @enderror
+  </div>
+
+  <div class="form-group">
     <label for="post_creator">Post Creator</label>
-    <select class="form-control" id="user_id" name="user_id">
+    <select class="form-control @error('user_id') is-invalid @enderror" id="user_id" name="user_id">
       @foreach ($users as $user)
         <option value="{{ $user->id }}" {{  ($user->id == $post->user_id) ?  'selected' : '' }}>{{ $user->name }}</option>
       @endforeach
     </select>
+
+    @error('user_id')
+      <div class="text-danger">{{ $message }}</div>
+    @enderror
+
   </div>
 
   <div class="form-group">
