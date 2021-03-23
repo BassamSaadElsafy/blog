@@ -30,3 +30,7 @@ Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.d
 Route::post('/posts/restore', [PostController::class, 'restore'])->name('posts.restore');
 
 Route::get('/posts/show/ajax', [PostController::class, 'get_post_response'])->name('posts.ajax_show');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

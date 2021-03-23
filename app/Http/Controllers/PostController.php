@@ -15,7 +15,6 @@ class PostController extends Controller
      */
     public function index()
     {
-
         $data = Post::withTrashed()->paginate(15);
         return view('posts.index', ['posts' => $data]);
     }
@@ -39,12 +38,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-      
+    
+        $valid_usersIDs = implode(',',User::pluck('id')->toArray());
         //validation
         $request->validate([
 
                 'title'        => ['required', 'min:3', 'unique:posts'],
-                'description'  => ['required', 'min:10']
+                'description'  => ['required', 'min:10'],
+                'user_id'      => ['required' ,'in:'.$valid_usersIDs]            //taking string like 1,2,3,.....etc
 
             ],
             [
@@ -52,6 +53,8 @@ class PostController extends Controller
                 'title.min'            => 'post title must be at least 3 characters',
                 'description.required' => 'you must fill description field',
                 'description.min'      => 'post description must be at least 10 characters',
+                'user_id.required'     => 'Post Creator must be selected from the list',
+                'user_id.in'           => 'Post Creator is not valid!',
             ]
         );
 
@@ -96,11 +99,14 @@ class PostController extends Controller
     public function update(Request $request, $post_id)
     {
 
+        $valid_usersIDs = implode(',',User::pluck('id')->toArray());
+
         //validation
         $request->validate([
 
             'title'        => ['required', 'min:3', 'unique:posts,id,' . $post_id], //ignore unique validation for the post that contains this post_id
-            'description'  => ['required', 'min:10']
+            'description'  => ['required', 'min:10'],
+            'user_id'      => ['required', 'in:'.$valid_usersIDs]
 
         ],
         [
@@ -108,6 +114,8 @@ class PostController extends Controller
             'title.min'            => 'post title must be at least 3 characters',
             'description.required' => 'you must fill description field',
             'description.min'      => 'post description must be at least 10 characters',
+            'user_id.required'     => 'Post Creator must be selected from the list',
+            'user_id.in'           => 'Post Creator is not valid!',
         ]
     );
 

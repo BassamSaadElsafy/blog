@@ -45,13 +45,16 @@
 
   <div class="form-group">
     <label for="post_creator">Post Creator</label>
-    <select class="form-control" name="user_id" id="post_creator">
+    <select class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="post_creator">
 
       @foreach ($users as $user)
         <option value="{{ $user->id }}">{{ $user->name }}</option>
       @endforeach
       
     </select>
+    @error('user_id')
+      <div class="text-danger">{{ $message }}</div>
+    @enderror
   </div>
 
   <div class="form-group">
