@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
-    use Sluggable;
+    use  HasFactory, SoftDeletes, Sluggable;
 
 
     protected $fillable = [

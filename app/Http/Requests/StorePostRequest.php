@@ -31,7 +31,7 @@ class StorePostRequest extends FormRequest
             'title'        => ['required', 'min:3', 'unique:posts'],
             'description'  => ['required', 'min:10'],
             'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
-            'post_img'     => ['required','file','mimes:jpeg,png']            //file or using image for validation images
+            'post_img'     => ['nullable','file','mimes:jpeg,png']            //file or using image for validation images
 
         ];
     }
