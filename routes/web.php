@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Whoops\Run;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ use Whoops\Run;
 
 
 //group route for posts using auth middleware
+
 
 Route::middleware('auth')->group(function () {
     
@@ -45,3 +47,30 @@ Route::middleware('auth')->group(function () {
 Auth::routes();             //contains all routes related to Auth Middleware
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get('/auth/redirect', function () {
+
+    return Socialite::driver('github')->redirect();
+    
+})->name('github.login');
+
+Route::get('/auth/callback', function () {
+    
+    $user = Socialite::driver('github')->user();
+
+    $data = ['name' => $user->name , 'email' => $user->email , 'password' =>$user->token ];
+    
+    $userDB = User::where('email' , $user->email)->first(); 
+    
+    if(is_null($userDB)){
+        
+        $userDB = User::create($data);
+    }
+
+
+    Auth::login($userDB);
+
+    return redirect()->route('posts.index');
+
+});
