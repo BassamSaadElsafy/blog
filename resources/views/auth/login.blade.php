@@ -69,6 +69,12 @@
                                 <a href="{{ route('github.login') }}" class="btn btn-dark">
                                     {{ __('Login with Github') }}
                                 </a>
+
+                                <hr>
+
+                                <a href="{{ route('google.login') }}" class="btn btn-success">
+                                    {{ __('Login with Google') }}
+                                </a>
                             </div>
                         </div>
                     </form>

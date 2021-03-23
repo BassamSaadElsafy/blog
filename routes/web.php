@@ -74,3 +74,41 @@ Route::get('/auth/callback', function () {
     return redirect()->route('posts.index');
 
 });
+
+
+
+Route::get('auth/google', function(){
+    return Socialite::driver('google')->redirect();
+})->name('google.login');
+Route::get('auth/google/callback', function(){
+    try {
+    
+        $user = Socialite::driver('google')->user();
+
+        // dd($user);
+ 
+        $finduser = User::where('email', $user->email)->first();
+ 
+        if($finduser){
+ 
+            Auth::login($finduser);
+
+            return redirect()->route('posts.index');
+ 
+        }else{
+            $newUser = User::create([
+                'name'     => $user->name,
+                'email'    => $user->email,
+                'password' => $user->token
+            ]);
+
+            Auth::login($newUser);
+ 
+            return redirect()->route('posts.index');
+        }
+
+    } catch (Exception $e) {
+        dd($e->getMessage());
+    }
+
+});
