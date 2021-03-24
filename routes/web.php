@@ -57,7 +57,7 @@ Route::get('/auth/redirect', function () {
 
 Route::get('/auth/callback', function () {
     
-    $user = Socialite::driver('github')->user();
+    $user = Socialite::driver('github')->stateless()->user();
 
     $data = ['name' => $user->name , 'email' => $user->email , 'password' =>$user->token ];
     
@@ -84,8 +84,6 @@ Route::get('auth/google/callback', function(){
     try {
     
         $user = Socialite::driver('google')->user();
-
-        // dd($user);
  
         $finduser = User::where('email', $user->email)->first();
  

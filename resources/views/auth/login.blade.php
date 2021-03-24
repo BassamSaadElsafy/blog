@@ -66,14 +66,28 @@
                                 @endif
                                 <hr>
 
-                                <a href="{{ route('github.login') }}" class="btn btn-dark">
-                                    {{ __('Login with Github') }}
-                                </a>
+                                {{-- <form action="{{ route('socialite.login', ['provider' => 'github']) }}" method="get">
+                                
+                                    @csrf
+                                    <input type="hidden" name="provider" value="github">
+
+                                    <button type="submit" class="btn btn-dark">
+                                        {{ __('Login with Github') }}
+                                    </button>
+
+                                </form> --}}
+                                
 
                                 <hr>
 
                                 <a href="{{ route('google.login') }}" class="btn btn-success">
                                     {{ __('Login with Google') }}
+                                </a>
+
+                                <hr>
+
+                                <a href="{{ route('github.login') }}" class="btn btn-dark">
+                                    {{ __('Login with Github') }}
                                 </a>
                             </div>
                         </div>
