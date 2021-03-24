@@ -3,44 +3,73 @@
  namespace App\Http\Controllers;
 
 use App\Models\User;
-use GuzzleHttp\Psr7\Request;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
- class SocialiteController extends Controller
- {
+class SocialiteController extends Controller
+{
 
- public function redirect($provider)
- {
-    return Socialite::driver($provider)->redirect();        //provider like google, github or facebook
- }
-
- public function callback(Request $request)
- {
- 	// dd('callback');
-
-     dd($request->provider);
-
-   $getInfo = Socialite::driver('')->user(); 
-   dd($getInfo);
-   $user = $this->create($getInfo,''); 
-   Auth::login($user); 
-   return redirect()->to('/home');
- }
-
- function create($getInfo,$provider)
- {
-
-   $user = User::where('provider_id', $getInfo->id)->first();
-   if (!$user) {
-        $user = User::create([
-           'name'     => $getInfo->name,
-           'email'    => $getInfo->email,
-           'provider' => $provider,
-           'provider_id' => $getInfo->id
-       ]);
-     }
-     return $user;
+  public function redirectToProviderGithub(){
+    return Socialite::driver('github')->redirect();
   }
 
-}
+  public function redirectToProviderGoogle(){
+    return Socialite::driver('google')->redirect();
+  }
+
+  public function handleProviderCallbackGithub()
+  {
+
+    try 
+    {
+        $user   = Socialite::driver('github')->stateless()->user();
+        $data   = ['name' => $user->name , 'email' => $user->email , 'password' =>$user->token ];
+        $userDB = User::where('email', $user->email)->first();
+    
+        if (is_null($userDB)) {
+            $userDB = User::create($data);
+        }
+
+        Auth::login($userDB);
+        return redirect()->route('posts.index');
+    }catch(Exception $ex){
+
+        session()->flash('error_msg' , 'Something went wrong!!');
+        return redirect()->route('posts.login');
+    }
+
+  }
+
+  public function handleProviderCallbackGoogle()
+  {
+    try 
+    {
+      $user     = Socialite::driver('google')->user();
+      $finduser = User::where('email', $user->email)->first();
+      if($finduser)
+      {
+        Auth::login($finduser);
+
+      }
+      else
+      {
+        $newUser = User::create([
+                                    'name'     => $user->name,
+                                    'email'    => $user->email,
+                                    'password' => $user->token
+                                ]);
+        Auth::login($newUser);
+      }
+
+    return redirect()->route('posts.index');
+
+    }
+    catch(Exception $ex) 
+    {
+      session()->flash('error_msg' , 'Something went wrong!!');
+      return redirect()->route('posts.login');
+    }
+  }
+
+}//end of controller

@@ -53,45 +53,33 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-sm">
                                     {{ __('Login') }}
                                 </button>
-                               
-                                
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
-                                <hr>
-
-                                {{-- <form action="{{ route('socialite.login', ['provider' => 'github']) }}" method="get">
                                 
-                                    @csrf
-                                    <input type="hidden" name="provider" value="github">
+                                <hr>   
 
-                                    <button type="submit" class="btn btn-dark">
-                                        {{ __('Login with Github') }}
-                                    </button>
-
-                                </form> --}}
-                                
-
-                                <hr>
-
-                                <a href="{{ route('google.login') }}" class="btn btn-success">
+                                <a href="{{ route('google.login') }}" class="btn btn-success btn-sm">
                                     {{ __('Login with Google') }}
                                 </a>
 
-                                <hr>
-
-                                <a href="{{ route('github.login') }}" class="btn btn-dark">
+                                <a href="{{ route('github.login') }}" class="btn btn-dark btn-sm">
                                     {{ __('Login with Github') }}
                                 </a>
+
                             </div>
                         </div>
                     </form>
+
+                    <hr>
+
+                    
                 </div>
             </div>
         </div>
