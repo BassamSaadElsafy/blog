@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,7 +39,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePostRequest $request)
+    public function store(PostRequest $request)
     {
     
         $data = $request->all();
@@ -85,25 +84,22 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePostRequest $request, $post_id)
+    public function update(PostRequest $request, Post $post)
     {
 
-        $post = Post::find($post_id);
+        $data = $post->toArray();
 
         //delete old image of post if exist
         if(!empty($post->post_img)){
             Storage::delete('post_images/' . $post->post_img);
         }
 
-        $data['post_img'] = $request->post_img->getClientOriginalName();
-        $request->post_img->storeAs('post_images', $data['post_img']);
-
-        $post->update([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'user_id'     => $request->user_id,
-            'post_img'    => $data['post_img'],
-        ]);
+        if(!empty($request->post_img)){
+            $data['post_img'] = $request->post_img->getClientOriginalName();
+            $request->post_img->storeAs('post_images', $data['post_img']);
+        }
+    
+        $post->update($data);
        
         return redirect()->route('posts.index');
     }
@@ -151,7 +147,6 @@ class PostController extends Controller
     public function logout()
     {
         Auth::logout();
-
         return redirect()->route('login');
 
     }

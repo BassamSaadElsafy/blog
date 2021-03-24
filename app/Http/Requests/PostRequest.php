@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
+use App\Rules\MAX_POST_ALLOWED;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePostRequest extends FormRequest
+class PostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,25 @@ class StorePostRequest extends FormRequest
      */
     public function rules()
     {
-        
-        $valid_usersIDs = implode(',',User::pluck('id')->toArray());
-        return [
 
-            'title'        => ['required', 'min:3', 'unique:posts'],
-            'description'  => ['required', 'min:10'],
-            'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
-            'post_img'     => ['nullable','file','mimes:jpeg,png']            //file or using image for validation images
-
+        $post_rules = [
+            'image'         => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png'],
+            "description"   => ["required", "min:10"],
+            "user_id"       => ["required", "exists:users,id", new MAX_POST_ALLOWED],
         ];
+
+        if ($this->getMethod() == 'POST') {
+
+            $post_rules += ['title'    => ["required", "min:3", "unique:posts"] ];
+
+        }else {
+
+            $post_rules += ["title"    => ["required", "min:3", "unique:posts,id," . $this->post->id] ];
+
+        }
+
+        return $post_rules;
+
     }
 
     public function messages()
@@ -49,5 +58,6 @@ class StorePostRequest extends FormRequest
             'post_img.file'        => 'Post Image must be file!',
             'post_img.mimes'       => 'Post Image must be jpeg or png type!',
         ];
+
     }
 }

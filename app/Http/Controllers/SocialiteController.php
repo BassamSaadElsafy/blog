@@ -12,7 +12,7 @@ use Laravel\Socialite\Facades\Socialite;
 
  public function redirect($provider)
  {
-     return Socialite::driver($provider)->redirect();        //provider like google, github or facebook
+    return Socialite::driver($provider)->redirect();        //provider like google, github or facebook
  }
 
  public function callback(Request $request)
