@@ -17,7 +17,6 @@ class PostController extends Controller
         return ['statusCode' => 200 , 'data' => PostResource::collection($data) ];
     }
 
-   
     public function store(Request $request)
     {
         $valid_usersIDs = implode(',',User::pluck('id')->toArray());
@@ -27,7 +26,6 @@ class PostController extends Controller
                 'title'        => ['required', 'min:3', 'unique:posts'],
                 'description'  => ['required', 'min:10'],
                 'user_id'      => ['required' ,'in:'.$valid_usersIDs],            //taking string like 1,2,3,.....etc
-            
             ],
             [
                 'title.required'       => 'you must fill title field',
@@ -36,7 +34,6 @@ class PostController extends Controller
                 'description.min'      => 'post description must be at least 10 characters',
                 'user_id.required'     => 'Post Creator must be selected from the list',
                 'user_id.in'           => 'Post Creator is not valid!',
-              
             ]
         );
 
@@ -47,12 +44,10 @@ class PostController extends Controller
         return ['statusCode' => 201 , 'statusMessage' => 'Post created successfully' , 'data' => $data];
     }
 
-
     public function show($id)
     {
         $data = Post::find($id);
         return ['statusCode'=> 200 ,'data' => new PostResource($data) ];
     }
 
-  
 }

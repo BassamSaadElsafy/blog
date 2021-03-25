@@ -26,26 +26,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/tokens/create', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]);
-
-    $user = User::where('email', $request->email)->first();
-
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
+    Route::post('/tokens/create', function (Request $request) {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'device_name' => 'required',
         ]);
-    }
 
-    // return $user;
+        $user = User::where('email', $request->email)->first();
 
-    return ['token' => $user->createToken($request->device_name)->plainTextToken];
-    
-});
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        // return $user;
+
+        return ['token' => $user->createToken($request->device_name)->plainTextToken];
+        
+    });
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
